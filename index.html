@@ -32,7 +32,6 @@
             * { transition: none !important; }
         }
 
-        /* Estilização customizada de scrollbar para o modo escuro no-print */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
@@ -41,15 +40,19 @@
 <script type="importmap">
 {
   "imports": {
+    "react": "https://esm.sh/react@^19.2.4",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
     "react/": "https://esm.sh/react@^19.2.4/",
-    "react": "https://esm.sh/react@^19.2.4"
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "vite": "https://esm.sh/vite@^7.3.1",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.4"
   }
 }
 </script>
 </head>
 <body class="bg-slate-900 text-slate-100">
     <div id="root"></div>
+    <!-- O Vite usará esta tag para iniciar o React -->
+    <script type="module" src="/index.tsx"></script>
 </body>
 </html>
