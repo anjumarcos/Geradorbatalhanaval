@@ -4,17 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Naval Strike - Gerador de Cartelas</title>
+    <title>Pirate Conquest - Gerador de Cartelas</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        .pirate-font { font-family: 'Pirata One', system-ui; }
         .mono { font-family: 'JetBrains+Mono', monospace; }
         
         @media print {
             @page {
                 size: A4;
-                margin: 10mm;
+                margin: 8mm;
             }
             .no-print { display: none !important; }
             .print-page { 
@@ -22,20 +23,21 @@
                 break-after: page !important;
                 display: block !important;
                 width: 100% !important;
-                border: none !important;
-                box-shadow: none !important;
                 padding: 0 !important;
-                margin: 0 0 20mm 0 !important;
+                margin: 0 !important;
+                color: black !important;
             }
-            body { background: white !important; padding: 0 !important; }
-            .shadow-xl, .shadow-2xl, .shadow-md, .shadow-lg { box-shadow: none !important; }
-            * { transition: none !important; }
+            /* Impede que o título do radar se separe da cartela */
+            .avoid-split {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+            body { background: white !important; }
         }
 
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #facc15; border-radius: 4px; }
     </style>
 <script type="importmap">
 {
@@ -50,7 +52,7 @@
 }
 </script>
 </head>
-<body class="bg-slate-900 text-slate-100">
+<body class="bg-[#0a0a0a] text-slate-100">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
 </body>

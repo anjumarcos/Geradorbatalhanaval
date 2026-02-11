@@ -23,14 +23,13 @@ export type BoardState = {
 };
 
 export const SHIPS_CONFIG: ShipType[] = [
-  { id: 'battleship', name: 'Battleship', size: 5, count: 1 },
-  { id: 'cruiser', name: 'Cruiser', size: 4, count: 1 },
-  { id: 'submarine', name: 'Submarine', size: 3, count: 1 },
-  { id: 'destroyer', name: 'Destroyer', size: 3, count: 1 },
-  { id: 'patrol_boat', name: 'Patrol Boat', size: 2, count: 2 },
+  { id: 'galeao', name: 'Galeão de Guerra', size: 5, count: 1 },
+  { id: 'caravela', name: 'Caravela Imperial', size: 4, count: 1 },
+  { id: 'bergantim', name: 'Bergantim Rápido', size: 3, count: 1 },
+  { id: 'escuna', name: 'Escuna Pirata', size: 3, count: 1 },
+  { id: 'bote', name: 'Bote de Saque', size: 2, count: 2 },
 ];
 
 export const ROWS = 10;
 export const COLS = 11;
-// Grid labels baseados em padrões de batalha naval profissionais
 export const COL_LABELS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];

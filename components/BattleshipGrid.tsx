@@ -18,35 +18,33 @@ const ShipPart: React.FC<{
   const rotation = isVertical ? 'rotate-90' : '';
   
   const colors: Record<string, string> = {
-    battleship: '#1e293b',
-    cruiser: '#334155',
-    submarine: '#475569',
-    destroyer: '#64748b',
-    patrol_boat: '#94a3b8',
+    galeao: '#451a03',    // Madeira escura
+    caravela: '#78350f',  // Madeira média
+    bergantim: '#92400e', // Madeira clara
+    escuna: '#b45309',    // Madeira bronze
+    bote: '#d97706',      // Madeira dourada
   };
 
-  const color = colors[type] || '#ccc';
+  const color = colors[type] || '#451a03';
 
   return (
     <svg 
       viewBox="0 0 40 40" 
       className={`absolute inset-0 w-full h-full ${rotation}`}
-      style={{ filter: scale > 0.6 ? 'drop-shadow(0px 1px 1px rgba(0,0,0,0.3))' : 'none' }}
     >
       {part === 'front' && (
-        <path d="M40,10 L15,10 C5,10 0,20 0,20 C0,20 5,30 15,30 L40,30 Z" fill={color} />
+        <path d="M40,5 L15,5 C5,5 0,20 0,20 C0,20 5,35 15,35 L40,35 Z" fill={color} stroke="#facc15" strokeWidth="1" />
       )}
       {part === 'middle' && (
-        <rect x="0" y="10" width="40" height="20" fill={color} />
+        <rect x="0" y="5" width="40" height="30" fill={color} stroke="#facc15" strokeWidth="0.5" />
       )}
       {part === 'back' && (
-        <path d="M0,10 L25,10 C35,10 40,15 40,20 L40,20 C40,25 35,30 25,30 L0,30 Z" fill={color} />
+        <path d="M0,5 L30,5 C35,5 40,10 40,20 L40,20 C40,30 35,35 30,35 L0,35 Z" fill={color} stroke="#facc15" strokeWidth="1" />
       )}
       {scale > 0.7 && part === 'middle' && (
         <>
-          <circle cx="10" cy="20" r="1.5" fill="white" fillOpacity="0.4" />
-          <circle cx="20" cy="20" r="1.5" fill="white" fillOpacity="0.4" />
-          <circle cx="30" cy="20" r="1.5" fill="white" fillOpacity="0.4" />
+          <rect x="15" y="10" width="10" height="20" fill="#facc15" fillOpacity="0.2" />
+          <circle cx="20" cy="20" r="2" fill="#facc15" />
         </>
       )}
     </svg>
@@ -55,7 +53,7 @@ const ShipPart: React.FC<{
 
 const BattleshipGrid: React.FC<BattleshipGridProps> = ({ board, showShips = false, scale = 1 }) => {
   const { grid, ships } = board;
-  const cellDimension = scale * 2.1; // Ligeiramente menor para caber melhor no A4
+  const cellDimension = scale * 2.1;
   
   const cellStyle = {
     width: `${cellDimension}rem`,
@@ -65,12 +63,11 @@ const BattleshipGrid: React.FC<BattleshipGridProps> = ({ board, showShips = fals
   const labelStyle = {
     width: `${cellDimension}rem`,
     height: `${cellDimension}rem`,
-    fontSize: `${scale * 0.7}rem`,
+    fontSize: `${scale * 0.75}rem`,
   };
 
   const getShipPartInfo = (r: number, c: number) => {
     if (!showShips) return null;
-    
     for (const ship of ships) {
       const { row, col, orientation, size, shipId } = ship;
       for (let i = 0; i < size; i++) {
@@ -88,17 +85,17 @@ const BattleshipGrid: React.FC<BattleshipGridProps> = ({ board, showShips = fals
   };
 
   return (
-    <div className={`inline-block border-slate-900 bg-white shadow-lg print:shadow-none overflow-hidden ${scale > 0.5 ? 'border-[3px]' : 'border-2'}`}>
+    <div className={`inline-block bg-white shadow-xl print:shadow-none overflow-hidden ${scale > 0.5 ? 'border-[3px] border-black' : 'border-2 border-black'}`}>
       {/* Column Labels */}
-      <div className="flex">
-        <div style={labelStyle} className={`flex items-center justify-center border-slate-900 font-black bg-slate-100 uppercase mono text-slate-400 ${scale > 0.5 ? 'border-b-2 border-r-2' : 'border-b border-r'}`}>
+      <div className="flex bg-[#facc15]">
+        <div style={labelStyle} className={`flex items-center justify-center font-black border-black mono ${scale > 0.5 ? 'border-b-2 border-r-2' : 'border-b border-r'}`}>
           #
         </div>
         {COL_LABELS.map((label, i) => (
           <div 
             key={i} 
             style={labelStyle} 
-            className={`flex items-center justify-center border-slate-900 font-black bg-slate-100 mono text-slate-800 ${scale > 0.5 ? 'border-b-2 border-r' : 'border-b border-r'}`}
+            className={`flex items-center justify-center border-black font-black mono text-black ${scale > 0.5 ? 'border-b-2 border-r' : 'border-b border-r'}`}
           >
             {label}
           </div>
@@ -111,7 +108,7 @@ const BattleshipGrid: React.FC<BattleshipGridProps> = ({ board, showShips = fals
           {/* Row Label */}
           <div 
             style={labelStyle} 
-            className={`flex items-center justify-center border-slate-900 font-black bg-slate-100 mono text-slate-800 ${scale > 0.5 ? 'border-r-2 border-b' : 'border-r border-b'}`}
+            className={`flex items-center justify-center border-black font-black bg-[#facc15] mono text-black ${scale > 0.5 ? 'border-r-2 border-b' : 'border-r border-b'}`}
           >
             {rIdx + 1}
           </div>
@@ -122,10 +119,10 @@ const BattleshipGrid: React.FC<BattleshipGridProps> = ({ board, showShips = fals
                 key={cIdx}
                 style={cellStyle}
                 className={`
-                  border-slate-300 relative
+                  border-black/10 relative
                   ${cIdx === COLS - 1 ? '' : 'border-r'}
                   ${rIdx === ROWS - 1 ? '' : 'border-b'}
-                  bg-[radial-gradient(#cbd5e1_0.5px,transparent_0.5px)] bg-[size:5px_5px]
+                  bg-[radial-gradient(#00000015_0.5px,transparent_0.5px)] bg-[size:6px_6px]
                 `}
               >
                 {partInfo && (
@@ -135,12 +132,6 @@ const BattleshipGrid: React.FC<BattleshipGridProps> = ({ board, showShips = fals
                     orientation={partInfo.orientation} 
                     scale={scale}
                   />
-                )}
-                {/* Indicador sutil de centro para o radar de ataque */}
-                {!partInfo && !showShips && (
-                   <div className="absolute inset-0 flex items-center justify-center opacity-[0.05]">
-                     <div className="w-1 h-1 rounded-full bg-slate-900"></div>
-                   </div>
                 )}
               </div>
             );

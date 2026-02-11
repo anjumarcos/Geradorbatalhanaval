@@ -3,7 +3,7 @@ import React, { useState, useCallback } from 'react';
 import { BoardState, SHIPS_CONFIG } from './types';
 import { generateBoard } from './utils/generator';
 import BattleshipGrid from './components/BattleshipGrid';
-import { Anchor, Printer, RefreshCw, Crosshair, Shield, Users, Target, Info, Map as MapIcon } from 'lucide-react';
+import { Skull, Printer, RefreshCw, Crosshair, Swords, Compass, Map as MapIcon, Info, Anchor } from 'lucide-react';
 
 const App: React.FC = () => {
   const [numCards, setNumCards] = useState<number>(4);
@@ -12,63 +12,58 @@ const App: React.FC = () => {
 
   const handleGenerate = useCallback(() => {
     setIsGenerating(true);
-    // Delay estratégico para feedback de UX
     setTimeout(() => {
       const newBoards: BoardState[] = [];
       for (let i = 0; i < numCards; i++) {
-        newBoards.push(generateBoard(`Comandante #${i + 1}`));
+        newBoards.push(generateBoard(`CAPITÃO #${i + 1}`));
       }
       setBoards(newBoards);
       setIsGenerating(false);
     }, 600);
   }, [numCards]);
 
-  const handlePrint = () => {
-    // Método direto para garantir compatibilidade entre navegadores
-    window.print();
-  };
+  const handlePrint = () => window.print();
 
   return (
-    <div className="min-h-screen pb-20 print:pb-0 bg-slate-900 text-slate-100 selection:bg-blue-500/30">
-      {/* Menu de Comando - Oculto na Impressão */}
-      <header className="bg-slate-900/95 backdrop-blur-md sticky top-0 z-50 border-b border-slate-800 p-6 no-print">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="flex items-center gap-4">
-            <div className="p-3 bg-blue-600 rounded-2xl shadow-lg shadow-blue-500/20 rotate-3">
-              <Anchor size={32} className="text-white" />
+    <div className="min-h-screen pb-20 print:pb-0 bg-[#0a0a0a] text-white selection:bg-yellow-500/30">
+      {/* Header Estilo Pirata */}
+      <header className="bg-black/95 border-b-4 border-yellow-500 p-4 no-print sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-yellow-500 rounded-lg rotate-3 text-black">
+              <Skull size={28} />
             </div>
             <div>
-              <h1 className="text-2xl font-black tracking-tighter uppercase italic leading-none">Batalha Royale</h1>
-              <p className="text-blue-500 text-[10px] font-black uppercase tracking-[0.2em] mt-1">Gerador de Combate Marítimo</p>
+              <h1 className="pirate-font text-3xl text-yellow-500 leading-none">Pirate Conquest</h1>
+              <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/50">Mapeador de Batalhas Navais</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-4 bg-slate-800/50 p-3 rounded-2xl border border-slate-700/50">
+          <div className="flex items-center gap-3 bg-white/5 p-2 rounded-xl border border-white/10">
             <div className="flex flex-col">
-              <label className="text-[10px] uppercase font-black text-slate-500 mb-1 ml-1">Total de Frotas</label>
+              <label className="text-[8px] uppercase font-black text-yellow-500/70 mb-1 ml-1">Frotas</label>
               <input 
                 type="number" 
-                min="2" 
-                max="25" 
+                min="2" max="25" 
                 value={numCards}
                 onChange={(e) => setNumCards(Math.max(2, parseInt(e.target.value) || 2))}
-                className="bg-slate-700 border border-slate-600 rounded-xl px-4 py-2 text-white w-20 font-bold focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                className="bg-black border border-yellow-500/30 rounded-lg px-3 py-1 text-yellow-500 w-16 font-bold focus:ring-1 focus:ring-yellow-500 outline-none"
               />
             </div>
             <button 
               onClick={handleGenerate}
               disabled={isGenerating}
-              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 disabled:bg-slate-800 text-white px-8 py-3 rounded-xl font-black uppercase tracking-tight transition-all h-fit self-end shadow-xl active:scale-95 disabled:text-slate-500"
+              className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-black px-5 py-2 rounded-lg font-black uppercase text-xs transition-all active:scale-95"
             >
-              <RefreshCw className={isGenerating ? 'animate-spin' : ''} size={18} />
-              {isGenerating ? 'Mobilizando...' : 'Gerar Armada'}
+              <RefreshCw className={isGenerating ? 'animate-spin' : ''} size={14} />
+              {isGenerating ? 'Navegando...' : 'Zarpar Frota'}
             </button>
             {boards.length > 0 && (
               <button 
                 onClick={handlePrint}
-                className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-3 rounded-xl font-black uppercase tracking-tight transition-all h-fit self-end shadow-xl"
+                className="flex items-center gap-2 bg-white text-black px-5 py-2 rounded-lg font-black uppercase text-xs transition-all hover:bg-yellow-50"
               >
-                <Printer size={18} />
+                <Printer size={14} />
                 IMPRIMIR
               </button>
             )}
@@ -76,69 +71,61 @@ const App: React.FC = () => {
         </div>
       </header>
 
-      <main className="max-w-[1200px] mx-auto px-6 mt-8 print:mt-0">
+      <main className="max-w-[1000px] mx-auto px-4 mt-6 print:mt-0">
         {boards.length === 0 && !isGenerating && (
-          <div className="flex flex-col items-center justify-center py-40 text-slate-700">
-            <div className="relative mb-8">
-               <Target size={120} className="opacity-10" />
-               <Crosshair size={40} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20 animate-pulse text-blue-500" />
-            </div>
-            <h2 className="text-xl font-black uppercase tracking-[0.3em]">Aguardando Coordenadas</h2>
-            <p className="mt-2 text-slate-500 font-medium">Configure a quantidade de jogadores para gerar o Kit de Guerra.</p>
+          <div className="flex flex-col items-center justify-center py-32 text-white/10">
+            <Compass size={120} className="mb-4 animate-[spin_10s_linear_infinite]" />
+            <h2 className="pirate-font text-4xl uppercase tracking-widest text-yellow-500/20">Sem rumo no oceano</h2>
+            <p className="mt-2 text-[10px] font-black uppercase tracking-widest">Defina a quantidade de capitães para iniciar o saque.</p>
           </div>
         )}
 
-        {/* Listagem das Cartelas - Transformadas em Páginas de Impressão */}
-        <div className="space-y-12 print:space-y-0">
+        <div className="space-y-8 print:space-y-0">
           {boards.map((currentBoard, boardIndex) => (
             <div 
               key={currentBoard.id} 
-              className="print-page bg-white text-slate-900 p-8 md:p-12 rounded-[3rem] border border-slate-800/10 shadow-2xl print:shadow-none print:border-0 print:p-0 print:m-0"
+              className="print-page bg-white text-black p-6 rounded-3xl border-4 border-yellow-500/20 print:border-0 print:p-0"
             >
-              {/* Header da Página */}
-              <div className="flex justify-between items-end border-b-4 border-slate-900 pb-6 mb-8 print:mb-10">
-                <div className="flex items-center gap-6">
-                  <div className="bg-slate-900 text-white p-4 rounded-3xl">
-                    <Shield size={48} />
+              {/* Header da Cartela Otimizado */}
+              <div className="flex justify-between items-center border-b-2 border-black pb-2 mb-4 print:mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="bg-black text-yellow-500 p-2 rounded-lg">
+                    <Swords size={24} />
                   </div>
                   <div>
-                    <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase italic leading-none">
+                    <h2 className="pirate-font text-2xl uppercase text-black leading-none">
                       {currentBoard.id}
                     </h2>
-                    <p className="text-blue-600 font-black uppercase tracking-[0.2em] text-[10px] mt-2">Dossiê Tático de Combate</p>
+                    <p className="text-[9px] font-black uppercase tracking-widest text-black/50">Mapa Secreto de Defesa</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-[10px] font-black uppercase text-slate-400">Página</div>
-                  <div className="text-4xl font-black text-slate-200 italic">#{boardIndex + 1}</div>
+                  <span className="pirate-font text-3xl text-black/20 italic">#{boardIndex + 1}</span>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 gap-12">
-                {/* PARTE 1: MINHA FROTA (VISÍVEL) */}
-                <section className="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-200 print:bg-white print:border-2 print:border-slate-100">
-                  <div className="flex items-center gap-3 mb-6">
-                    <Shield className="text-blue-600" size={24} />
-                    <h3 className="text-xl font-black uppercase italic text-slate-800">Minha Frota (Defesa)</h3>
+              <div className="grid grid-cols-1 gap-6">
+                {/* DEFESA */}
+                <section className="bg-yellow-500/5 p-4 rounded-2xl border border-black/5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Anchor className="text-black" size={18} />
+                    <h3 className="pirate-font text-xl uppercase">Minha Tripulação</h3>
                   </div>
-                  <div className="flex flex-col md:flex-row gap-10 items-start">
-                    <div className="shrink-0">
-                       <BattleshipGrid board={currentBoard} showShips={true} scale={0.8} />
+                  <div className="flex flex-col md:flex-row gap-6 items-start">
+                    <div className="shrink-0 scale-90 origin-top-left">
+                       <BattleshipGrid board={currentBoard} showShips={true} scale={0.7} />
                     </div>
-                    <div className="flex-1 space-y-6">
-                      <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm print:shadow-none">
-                        <h4 className="text-[10px] font-black uppercase text-blue-500 mb-3 flex items-center gap-2">
-                           <Info size={14} /> Protocolo de Segurança
-                        </h4>
-                        <p className="text-sm font-bold text-slate-600 leading-relaxed italic">
-                          "Não revele esta folha aos seus oponentes. Use esta grade para marcar os disparos recebidos. Se um navio for totalmente atingido, ele afunda."
+                    <div className="flex-1 space-y-4">
+                      <div className="bg-white p-3 rounded-xl border-2 border-dashed border-black/20">
+                        <p className="text-[10px] font-bold text-black/70 italic leading-tight">
+                          "Mantenha este mapa longe dos olhos dos traidores. Marque os canhões inimigos aqui. Se seu galeão for atingido por completo, ele afunda!"
                         </p>
                       </div>
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="grid grid-cols-2 gap-x-4 gap-y-1">
                         {SHIPS_CONFIG.map(ship => (
-                          <div key={ship.id} className="flex items-center justify-between text-[10px] font-bold uppercase p-2 border-b border-slate-100">
-                            <span className="text-slate-400">{ship.name}</span>
-                            <span className="bg-slate-900 text-white px-2 rounded-full font-mono">{ship.size} pts</span>
+                          <div key={ship.id} className="flex justify-between text-[9px] font-black uppercase border-b border-black/10 py-1">
+                            <span>{ship.name}</span>
+                            <span className="text-yellow-600 font-mono">{ship.size} canhões</span>
                           </div>
                         ))}
                       </div>
@@ -146,30 +133,29 @@ const App: React.FC = () => {
                   </div>
                 </section>
 
-                {/* PARTE 2: RADARES DE ATAQUE (EM BRANCO) */}
+                {/* OFENSIVA (RADARES) */}
                 <section>
-                  <div className="flex items-center gap-3 mb-8 bg-slate-900 text-white p-4 rounded-2xl w-fit">
-                    <Crosshair className="text-red-500" size={24} />
-                    <h3 className="text-xl font-black uppercase italic">Radar de Ataque (Ofensiva)</h3>
+                  <div className="flex items-center gap-2 mb-4 bg-black text-yellow-500 p-2 rounded-lg w-fit">
+                    <Crosshair size={18} />
+                    <h3 className="pirate-font text-lg uppercase leading-none">Mapa de Saque (Ataque)</h3>
                   </div>
                   
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 print:grid-cols-3 gap-8">
+                  <div className="grid grid-cols-2 md:grid-cols-3 print:grid-cols-4 gap-4">
                     {boards.map((otherBoard, otherIdx) => {
                       if (otherIdx === boardIndex) return null;
-                      
                       return (
-                        <div key={`radar-${otherIdx}`} className="flex flex-col gap-3">
-                          <div className="flex items-center justify-between border-b-2 border-slate-200 pb-2 px-1">
-                            <span className="text-[10px] font-black uppercase italic text-slate-500">
+                        <div key={`radar-${otherIdx}`} className="avoid-split flex flex-col gap-1">
+                          <div className="flex items-center justify-between border-b border-black/20 pb-1 px-1">
+                            <span className="text-[8px] font-black uppercase text-black/60">
                               ALVO: {otherBoard.id}
                             </span>
-                            <div className="w-2 h-2 rounded-full bg-red-600 shadow-sm animate-pulse"></div>
+                            <Skull size={10} className="text-red-600" />
                           </div>
-                          <div className="flex justify-center">
+                          <div className="flex justify-center scale-[0.85] origin-top">
                             <BattleshipGrid 
                               board={{...otherBoard, grid: otherBoard.grid.map(r => r.map(() => null))}} 
                               showShips={false} 
-                              scale={0.4} 
+                              scale={0.35} 
                             />
                           </div>
                         </div>
@@ -179,36 +165,35 @@ const App: React.FC = () => {
                 </section>
               </div>
 
-              {/* Footer da Página de Impressão */}
-              <div className="mt-16 pt-8 border-t-2 border-dashed border-slate-200 flex justify-between items-center opacity-30">
-                <div className="flex gap-8">
-                   <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full bg-red-600"></div>
-                      <span className="text-[9px] font-black uppercase">X = FOGO (Acerto)</span>
+              <div className="mt-8 pt-4 border-t border-dashed border-black/20 flex justify-between items-center opacity-40">
+                <div className="flex gap-4">
+                   <div className="flex items-center gap-1">
+                      <div className="w-2 h-2 bg-red-600"></div>
+                      <span className="text-[8px] font-black uppercase">FOGO</span>
                    </div>
-                   <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full border-2 border-blue-600"></div>
-                      <span className="text-[9px] font-black uppercase">O = ÁGUA (Erro)</span>
+                   <div className="flex items-center gap-1">
+                      <div className="w-2 h-2 border border-black"></div>
+                      <span className="text-[8px] font-black uppercase">ÁGUA</span>
                    </div>
                 </div>
-                <div className="text-[10px] font-mono font-bold uppercase tracking-widest">
-                  NAV-ROYALE-GEN-v3.0
+                <div className="text-[8px] font-mono font-black uppercase tracking-widest">
+                  PIRATE-CONQUEST-v4.0
                 </div>
               </div>
             </div>
           ))}
 
-          {/* Gabarito Final - No-Print por padrão para o Árbitro */}
-          <div className="bg-slate-800 text-white p-12 rounded-[3rem] no-print border border-slate-700 shadow-2xl">
-            <div className="text-center mb-12">
-               <MapIcon size={48} className="mx-auto text-blue-500 mb-4" />
-               <h2 className="text-3xl font-black uppercase italic">Espelho de Comando</h2>
-               <p className="text-slate-400 font-bold uppercase tracking-[0.3em] text-[10px] mt-1">Gabarito Secreto para o Árbitro da Partida</p>
+          {/* GABARITO (NO-PRINT) */}
+          <div className="bg-yellow-500 text-black p-8 rounded-[2rem] no-print shadow-2xl">
+            <div className="text-center mb-6">
+               <MapIcon size={32} className="mx-auto mb-2" />
+               <h2 className="pirate-font text-3xl uppercase leading-none">Mapa do Tesouro (Gabarito)</h2>
+               <p className="text-[10px] font-black uppercase tracking-widest opacity-60">Segredo do Almirante</p>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                {boards.map((board) => (
-                 <div key={`mirror-${board.id}`} className="flex flex-col items-center gap-3 p-4 bg-slate-900 rounded-3xl border border-slate-700">
-                    <span className="text-[10px] font-black uppercase italic text-blue-400">{board.id}</span>
+                 <div key={`mirror-${board.id}`} className="flex flex-col items-center gap-2 p-3 bg-black/10 rounded-2xl border border-black/20">
+                    <span className="text-[10px] font-black uppercase italic text-black/80">{board.id}</span>
                     <BattleshipGrid board={board} showShips={true} scale={0.35} />
                  </div>
                ))}
@@ -217,13 +202,13 @@ const App: React.FC = () => {
         </div>
       </main>
 
-      <footer className="mt-40 py-20 text-center no-print border-t border-slate-800 bg-slate-900/50">
-         <div className="flex justify-center gap-8 opacity-10 mb-6">
-            <Anchor size={24} />
-            <Crosshair size={24} />
-            <Shield size={24} />
+      <footer className="mt-20 py-10 text-center no-print border-t-2 border-yellow-500/20">
+         <div className="flex justify-center gap-4 opacity-10 mb-2 text-yellow-500">
+            <Anchor size={20} />
+            <Skull size={20} />
+            <Swords size={20} />
          </div>
-         <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.5em]">Naval Strike Systems - Tactical Unit</p>
+         <p className="text-white/30 text-[9px] font-black uppercase tracking-[0.4em]">Pirate Conquest Tactical Unit © 1720</p>
       </footer>
     </div>
   );
