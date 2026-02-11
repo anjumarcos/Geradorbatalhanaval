@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naval Strike - Gerador de Cartelas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        .mono { font-family: 'JetBrains+Mono', monospace; }
+        
+        @media print {
+            @page {
+                size: A4;
+                margin: 10mm;
+            }
+            .no-print { display: none !important; }
+            .print-page { 
+                page-break-after: always !important; 
+                break-after: page !important;
+                display: block !important;
+                width: 100% !important;
+                border: none !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+                margin: 0 0 20mm 0 !important;
+            }
+            body { background: white !important; padding: 0 !important; }
+            .shadow-xl, .shadow-2xl, .shadow-md, .shadow-lg { box-shadow: none !important; }
+            * { transition: none !important; }
+        }
+
+        /* Estilização customizada de scrollbar para o modo escuro no-print */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4"
+  }
+}
+</script>
+</head>
+<body class="bg-slate-900 text-slate-100">
+    <div id="root"></div>
+</body>
+</html>

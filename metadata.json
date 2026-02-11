@@ -1,0 +1,5 @@
+{
+  "name": "Gerador de Batalha Naval",
+  "description": "Um gerador profissional de cartelas de Batalha Naval com posicionamento aleatório de frotas, suporte a múltiplas cartelas e espelho de soluções para conferência.",
+  "requestFramePermissions": []
+}
