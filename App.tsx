@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback } from 'react';
 import { BoardState, SHIPS_CONFIG } from './types';
 import { generateBoard } from './utils/generator';
@@ -25,8 +24,8 @@ const App: React.FC = () => {
   const handlePrint = () => window.print();
 
   return (
-    <div className="min-h-screen pb-20 print:pb-0 bg-[#0a0a0a] text-white selection:bg-yellow-500/30">
-      {/* UI do Sistema (Dark) */}
+    <div className="min-h-screen pb-20 print:pb-0 print:bg-white bg-[#0a0a0a] text-white selection:bg-yellow-500/30">
+      {/* UI do Sistema (Apenas Tela) */}
       <header className="bg-black border-b-4 border-yellow-500 p-4 no-print sticky top-0 z-50">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
@@ -71,9 +70,9 @@ const App: React.FC = () => {
         </div>
       </header>
 
-      <main className="max-w-[1100px] mx-auto px-4 mt-8 print:mt-0 print:px-0">
+      <main className="max-w-[1100px] mx-auto px-4 mt-8 print:mt-0 print:px-0 print:max-w-none">
         {boards.length === 0 && !isGenerating && (
-          <div className="flex flex-col items-center justify-center py-32 text-white/10">
+          <div className="flex flex-col items-center justify-center py-32 text-white/10 no-print">
             <Compass size={120} className="mb-4 opacity-20" />
             <h2 className="pirate-font text-4xl text-yellow-500/20">Aguardando Ordens do Porto</h2>
             <p className="mt-2 text-[10px] font-black uppercase tracking-widest">Defina o número de capitães e zarpe!</p>
@@ -84,13 +83,12 @@ const App: React.FC = () => {
           {boards.map((currentBoard, boardIndex) => (
             <div 
               key={currentBoard.id} 
-              className="print-page bg-white text-black p-8 rounded-[2.5rem] border-4 border-yellow-500 print:border-0 print:p-0"
+              className="print-page bg-white text-black p-8 rounded-[2.5rem] border-4 border-yellow-500 print:border-0 print:p-8"
             >
               {/* CABEÇALHO DA CARTELA COM LOGO */}
               <div className="flex justify-between items-start border-b-[3px] border-black pb-4 mb-6">
                 <div className="flex items-start gap-4">
-                  {/* Espaço para Logo - Caso não exista logo.png, mostra ícone de fallback */}
-                  <div className="w-20 h-20 bg-black flex items-center justify-center rounded-xl overflow-hidden shrink-0">
+                  <div className="w-20 h-20 bg-black flex items-center justify-center rounded-xl overflow-hidden shrink-0 print:border-2 print:border-black">
                     <img 
                       src="/logo.png" 
                       alt="Logo Puerto Rico" 
@@ -107,7 +105,7 @@ const App: React.FC = () => {
                       1ª Batalha Naval do Puerto Rico
                     </h2>
                     <div className="flex items-center gap-2">
-                       <span className="bg-yellow-500 text-black px-2 py-0.5 text-[10px] font-black rounded">{currentBoard.id}</span>
+                       <span className="bg-yellow-500 text-black px-2 py-0.5 text-[10px] font-black rounded border border-black/20">{currentBoard.id}</span>
                        <span className="text-[9px] font-black uppercase tracking-widest text-black/40">Dossiê de Combate</span>
                     </div>
                   </div>
@@ -120,8 +118,8 @@ const App: React.FC = () => {
 
               <div className="grid grid-cols-1 gap-8">
                 {/* ÁREA DE DEFESA */}
-                <section className="border-2 border-black p-4 rounded-3xl relative overflow-hidden bg-yellow-500/5">
-                  <div className="absolute top-0 right-0 p-4 opacity-5">
+                <section className="border-2 border-black p-4 rounded-3xl relative overflow-hidden bg-yellow-500/5 print:bg-white">
+                  <div className="absolute top-0 right-0 p-4 opacity-5 no-print">
                     <ShieldCheck size={120} />
                   </div>
                   <div className="flex items-center gap-2 mb-4">
@@ -133,7 +131,7 @@ const App: React.FC = () => {
                        <BattleshipGrid board={currentBoard} showShips={true} scale={0.75} />
                     </div>
                     <div className="flex-1 w-full">
-                      <div className="bg-white border-2 border-black p-4 rounded-2xl mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                      <div className="bg-white border-2 border-black p-4 rounded-2xl mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] print:shadow-none">
                         <p className="text-xs font-bold leading-relaxed">
                           "Capitão, posicione seus navios com sabedoria. Use este mapa para registrar os ataques sofridos. Não permita que o inimigo descubra sua localização!"
                         </p>
@@ -142,7 +140,7 @@ const App: React.FC = () => {
                         {SHIPS_CONFIG.map(ship => (
                           <div key={ship.id} className="flex justify-between items-center text-[10px] font-black uppercase border-b border-black/10 py-1.5 px-2">
                             <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-black"></div> {ship.name}</span>
-                            <span className="bg-black text-yellow-500 px-2 rounded-full font-mono">{ship.size} Canhões</span>
+                            <span className="bg-black text-yellow-500 px-2 rounded-full font-mono border border-black/20">{ship.size} Canhões</span>
                           </div>
                         ))}
                       </div>
@@ -152,7 +150,7 @@ const App: React.FC = () => {
 
                 {/* ÁREA DE ATAQUE (RADARES) */}
                 <section>
-                  <div className="flex items-center gap-2 mb-4 bg-black text-yellow-500 p-2 px-4 rounded-lg w-fit">
+                  <div className="flex items-center gap-2 mb-4 bg-black text-yellow-500 p-2 px-4 rounded-lg w-fit print:border print:border-black">
                     <Crosshair size={20} />
                     <h3 className="pirate-font text-xl uppercase leading-none">Plano de Saque (Radar de Ataque)</h3>
                   </div>
@@ -161,7 +159,7 @@ const App: React.FC = () => {
                     {boards.map((otherBoard, otherIdx) => {
                       if (otherIdx === boardIndex) return null;
                       return (
-                        <div key={`radar-${otherIdx}`} className="avoid-split border border-black/20 p-2 rounded-xl flex flex-col items-center gap-2">
+                        <div key={`radar-${otherIdx}`} className="avoid-split border border-black/20 p-2 rounded-xl flex flex-col items-center gap-2 bg-white">
                           <div className="w-full flex justify-between items-center border-b border-black pb-1 mb-1">
                             <span className="text-[8px] font-black uppercase truncate max-w-[80px]">
                               {otherBoard.id}
@@ -183,7 +181,7 @@ const App: React.FC = () => {
               </div>
 
               {/* RODAPÉ DA CARTELA */}
-              <div className="mt-8 pt-4 border-t-2 border-black flex justify-between items-end">
+              <div className="mt-8 pt-4 border-t-2 border-black flex justify-between items-end bg-white">
                 <div className="flex gap-6">
                    <div className="flex items-center gap-2">
                       <div className="w-4 h-4 bg-red-600 border border-black"></div>
@@ -196,28 +194,33 @@ const App: React.FC = () => {
                 </div>
                 <div className="text-right">
                   <p className="text-[11px] pirate-font text-black/60 tracking-wider">Puerto Rico Board Games & Gastro Bar</p>
-                  <p className="text-[8px] font-mono font-black opacity-30">V.4.2-NAVAL-PRINT-READY</p>
+                  <p className="text-[8px] font-mono font-black opacity-30">V.4.5-NAVAL-ECO-PRINT</p>
                 </div>
               </div>
             </div>
           ))}
 
-          {/* GABARITO (NO-PRINT) */}
-          <div className="bg-yellow-500 text-black p-8 rounded-[3rem] no-print shadow-2xl mx-4">
-            <div className="text-center mb-8">
-               <MapIcon size={40} className="mx-auto mb-2" />
-               <h2 className="pirate-font text-4xl uppercase leading-none">Mapa do Almirante (Gabarito)</h2>
-               <p className="text-xs font-black uppercase tracking-[0.3em] opacity-60">Confidencial - Não imprima esta parte</p>
+          {/* GABARITO (Impresso em página separada) */}
+          {boards.length > 0 && (
+            <div className="print-page bg-yellow-500 text-black p-8 rounded-[3rem] shadow-2xl mx-0 gabarito-print">
+              <div className="text-center mb-8 border-b-2 border-black pb-4">
+                 <MapIcon size={40} className="mx-auto mb-2" />
+                 <h2 className="pirate-font text-4xl uppercase leading-none">Mapa do Almirante (Gabarito)</h2>
+                 <p className="text-xs font-black uppercase tracking-[0.3em] opacity-60">Confidencial - Posição de Todas as Frotas</p>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 print:grid-cols-4 gap-6">
+                 {boards.map((board) => (
+                   <div key={`mirror-${board.id}`} className="avoid-split flex flex-col items-center gap-3 p-4 bg-white border-2 border-black rounded-3xl">
+                      <span className="text-xs font-black uppercase italic bg-black text-yellow-500 px-3 py-1 rounded-full border border-black">{board.id}</span>
+                      <BattleshipGrid board={board} showShips={true} scale={0.4} />
+                   </div>
+                 ))}
+              </div>
+              <div className="mt-8 pt-4 border-t border-black text-center opacity-40 no-print">
+                 <p className="text-[9px] font-black uppercase">Este gabarito sai na última página da sua impressão.</p>
+              </div>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-               {boards.map((board) => (
-                 <div key={`mirror-${board.id}`} className="flex flex-col items-center gap-3 p-4 bg-black/5 border-2 border-black/20 rounded-3xl">
-                    <span className="text-xs font-black uppercase italic bg-black text-yellow-500 px-3 py-1 rounded-full">{board.id}</span>
-                    <BattleshipGrid board={board} showShips={true} scale={0.4} />
-                 </div>
-               ))}
-            </div>
-          </div>
+          )}
         </div>
       </main>
 

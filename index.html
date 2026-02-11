@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -15,7 +14,13 @@
         @media print {
             @page {
                 size: A4;
-                margin: 5mm;
+                margin: 0mm; /* Deixa o controle de margens para os elementos internos */
+            }
+            html, body { 
+                background: white !important; 
+                color: black !important;
+                margin: 0 !important;
+                padding: 0 !important;
             }
             .no-print { display: none !important; }
             .print-page { 
@@ -23,20 +28,32 @@
                 break-after: page !important;
                 display: block !important;
                 width: 100% !important;
-                padding: 5mm !important;
+                padding: 10mm !important;
                 margin: 0 !important;
                 background: white !important;
                 color: black !important;
+                border: none !important;
+                box-shadow: none !important;
+                box-sizing: border-box;
             }
             .avoid-split {
                 page-break-inside: avoid !important;
                 break-inside: avoid !important;
                 display: block;
-                margin-bottom: 1rem;
             }
-            body { background: white !important; }
+            /* Remove qualquer fundo escuro de containers superiores */
+            div { background-color: transparent !important; }
+            .bg-white { background-color: white !important; }
             .bg-yellow-500 { background-color: #facc15 !important; }
             .border-black { border-color: black !important; }
+            
+            /* Garante que o gabarito também tenha fundo branco na impressão */
+            .gabarito-print {
+                background: white !important;
+                color: black !important;
+                border: 2px dashed black !important;
+                border-radius: 0 !important;
+            }
         }
 
         ::-webkit-scrollbar { width: 8px; }
