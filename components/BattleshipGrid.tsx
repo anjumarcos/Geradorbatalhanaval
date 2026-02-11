@@ -18,14 +18,14 @@ const ShipPart: React.FC<{
   const rotation = isVertical ? 'rotate-90' : '';
   
   const colors: Record<string, string> = {
-    galeao: '#451a03',    // Madeira escura
-    caravela: '#78350f',  // Madeira média
-    bergantim: '#92400e', // Madeira clara
-    escuna: '#b45309',    // Madeira bronze
-    bote: '#d97706',      // Madeira dourada
+    galeao: '#2d1a0a',    // Quase preto/madeira
+    caravela: '#451a03',  // Madeira escura
+    bergantim: '#78350f', // Madeira média
+    escuna: '#92400e',    // Madeira clara
+    bote: '#b45309',      // Madeira bronze
   };
 
-  const color = colors[type] || '#451a03';
+  const color = colors[type] || '#000';
 
   return (
     <svg 
@@ -33,19 +33,16 @@ const ShipPart: React.FC<{
       className={`absolute inset-0 w-full h-full ${rotation}`}
     >
       {part === 'front' && (
-        <path d="M40,5 L15,5 C5,5 0,20 0,20 C0,20 5,35 15,35 L40,35 Z" fill={color} stroke="#facc15" strokeWidth="1" />
+        <path d="M40,5 L15,5 C5,5 0,20 0,20 C0,20 5,35 15,35 L40,35 Z" fill={color} stroke="black" strokeWidth="1.5" />
       )}
       {part === 'middle' && (
-        <rect x="0" y="5" width="40" height="30" fill={color} stroke="#facc15" strokeWidth="0.5" />
+        <rect x="0" y="5" width="40" height="30" fill={color} stroke="black" strokeWidth="1" />
       )}
       {part === 'back' && (
-        <path d="M0,5 L30,5 C35,5 40,10 40,20 L40,20 C40,30 35,35 30,35 L0,35 Z" fill={color} stroke="#facc15" strokeWidth="1" />
+        <path d="M0,5 L30,5 C35,5 40,10 40,20 L40,20 C40,30 35,35 30,35 L0,35 Z" fill={color} stroke="black" strokeWidth="1.5" />
       )}
       {scale > 0.7 && part === 'middle' && (
-        <>
-          <rect x="15" y="10" width="10" height="20" fill="#facc15" fillOpacity="0.2" />
-          <circle cx="20" cy="20" r="2" fill="#facc15" />
-        </>
+        <circle cx="20" cy="20" r="2.5" fill="#facc15" />
       )}
     </svg>
   );
@@ -63,7 +60,7 @@ const BattleshipGrid: React.FC<BattleshipGridProps> = ({ board, showShips = fals
   const labelStyle = {
     width: `${cellDimension}rem`,
     height: `${cellDimension}rem`,
-    fontSize: `${scale * 0.75}rem`,
+    fontSize: `${scale * 0.7}rem`,
   };
 
   const getShipPartInfo = (r: number, c: number) => {
@@ -85,17 +82,17 @@ const BattleshipGrid: React.FC<BattleshipGridProps> = ({ board, showShips = fals
   };
 
   return (
-    <div className={`inline-block bg-white shadow-xl print:shadow-none overflow-hidden ${scale > 0.5 ? 'border-[3px] border-black' : 'border-2 border-black'}`}>
+    <div className={`inline-block bg-white overflow-hidden border-2 border-black`}>
       {/* Column Labels */}
-      <div className="flex bg-[#facc15]">
-        <div style={labelStyle} className={`flex items-center justify-center font-black border-black mono ${scale > 0.5 ? 'border-b-2 border-r-2' : 'border-b border-r'}`}>
+      <div className="flex bg-[#facc15] border-b-2 border-black">
+        <div style={labelStyle} className="flex items-center justify-center font-black border-r-2 border-black mono text-black">
           #
         </div>
         {COL_LABELS.map((label, i) => (
           <div 
             key={i} 
             style={labelStyle} 
-            className={`flex items-center justify-center border-black font-black mono text-black ${scale > 0.5 ? 'border-b-2 border-r' : 'border-b border-r'}`}
+            className={`flex items-center justify-center border-black font-black mono text-black ${i === COLS - 1 ? '' : 'border-r'}`}
           >
             {label}
           </div>
@@ -108,7 +105,7 @@ const BattleshipGrid: React.FC<BattleshipGridProps> = ({ board, showShips = fals
           {/* Row Label */}
           <div 
             style={labelStyle} 
-            className={`flex items-center justify-center border-black font-black bg-[#facc15] mono text-black ${scale > 0.5 ? 'border-r-2 border-b' : 'border-r border-b'}`}
+            className={`flex items-center justify-center border-black font-black bg-[#facc15] mono text-black border-r-2 ${rIdx === ROWS - 1 ? '' : 'border-b'}`}
           >
             {rIdx + 1}
           </div>
@@ -119,10 +116,9 @@ const BattleshipGrid: React.FC<BattleshipGridProps> = ({ board, showShips = fals
                 key={cIdx}
                 style={cellStyle}
                 className={`
-                  border-black/10 relative
+                  border-black/20 relative
                   ${cIdx === COLS - 1 ? '' : 'border-r'}
                   ${rIdx === ROWS - 1 ? '' : 'border-b'}
-                  bg-[radial-gradient(#00000015_0.5px,transparent_0.5px)] bg-[size:6px_6px]
                 `}
               >
                 {partInfo && (
