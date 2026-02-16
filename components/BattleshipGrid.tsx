@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { COL_LABELS, ROWS, COLS, BoardState, Orientation } from '../types';
+import { COL_LABELS, BoardState, Orientation } from '../types';
 
 interface BattleshipGridProps {
   board: BoardState;
@@ -18,11 +18,11 @@ const ShipPart: React.FC<{
   const rotation = isVertical ? 'rotate-90' : '';
   
   const colors: Record<string, string> = {
-    galeao: '#2d1a0a',    // Quase preto/madeira
-    caravela: '#451a03',  // Madeira escura
-    bergantim: '#78350f', // Madeira média
-    escuna: '#92400e',    // Madeira clara
-    bote: '#b45309',      // Madeira bronze
+    galeao: '#1a1a1a',    
+    caravela: '#2d1a0a',  
+    bergantim: '#451a03', 
+    escuna: '#78350f',    
+    bote: '#92400e',      
   };
 
   const color = colors[type] || '#000';
@@ -41,7 +41,7 @@ const ShipPart: React.FC<{
       {part === 'back' && (
         <path d="M0,5 L30,5 C35,5 40,10 40,20 L40,20 C40,30 35,35 30,35 L0,35 Z" fill={color} stroke="black" strokeWidth="1.5" />
       )}
-      {scale > 0.7 && part === 'middle' && (
+      {scale > 0.5 && part === 'middle' && (
         <circle cx="20" cy="20" r="2.5" fill="#facc15" />
       )}
     </svg>
@@ -49,7 +49,7 @@ const ShipPart: React.FC<{
 };
 
 const BattleshipGrid: React.FC<BattleshipGridProps> = ({ board, showShips = false, scale = 1 }) => {
-  const { grid, ships } = board;
+  const { grid, ships, rows, cols } = board;
   const cellDimension = scale * 2.1;
   
   const cellStyle = {
@@ -83,29 +83,26 @@ const BattleshipGrid: React.FC<BattleshipGridProps> = ({ board, showShips = fals
 
   return (
     <div className={`inline-block bg-white overflow-hidden border-2 border-black`}>
-      {/* Column Labels */}
       <div className="flex bg-[#facc15] border-b-2 border-black">
         <div style={labelStyle} className="flex items-center justify-center font-black border-r-2 border-black mono text-black">
           #
         </div>
-        {COL_LABELS.map((label, i) => (
+        {COL_LABELS.slice(0, cols).map((label, i) => (
           <div 
             key={i} 
             style={labelStyle} 
-            className={`flex items-center justify-center border-black font-black mono text-black ${i === COLS - 1 ? '' : 'border-r'}`}
+            className={`flex items-center justify-center border-black font-black mono text-black ${i === cols - 1 ? '' : 'border-r'}`}
           >
             {label}
           </div>
         ))}
       </div>
 
-      {/* Grid Rows */}
       {grid.map((row, rIdx) => (
         <div key={rIdx} className="flex">
-          {/* Row Label */}
           <div 
             style={labelStyle} 
-            className={`flex items-center justify-center border-black font-black bg-[#facc15] mono text-black border-r-2 ${rIdx === ROWS - 1 ? '' : 'border-b'}`}
+            className={`flex items-center justify-center border-black font-black bg-[#facc15] mono text-black border-r-2 ${rIdx === rows - 1 ? '' : 'border-b'}`}
           >
             {rIdx + 1}
           </div>
@@ -117,8 +114,8 @@ const BattleshipGrid: React.FC<BattleshipGridProps> = ({ board, showShips = fals
                 style={cellStyle}
                 className={`
                   border-black/20 relative
-                  ${cIdx === COLS - 1 ? '' : 'border-r'}
-                  ${rIdx === ROWS - 1 ? '' : 'border-b'}
+                  ${cIdx === cols - 1 ? '' : 'border-r'}
+                  ${rIdx === rows - 1 ? '' : 'border-b'}
                 `}
               >
                 {partInfo && (
